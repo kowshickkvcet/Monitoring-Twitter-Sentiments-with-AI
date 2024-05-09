@@ -1,0 +1,32 @@
+import tweepy
+from textblob import TextBlob
+
+# Twitter API credentials
+consumer_key = 'your_consumer_key'
+consumer_secret = 'your_consumer_secret'
+access_token = 'your_access_token'
+access_token_secret = 'your_access_token_secret'
+
+# Authenticate to Twitter API
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+api = tweepy.API(auth)
+
+# Function to perform sentiment analysis
+def analyze_sentiment(tweet):
+    analysis = TextBlob(tweet)
+    if analysis.sentiment.polarity > 0:
+        return 'Positive'
+    elif analysis.sentiment.polarity == 0:
+        return 'Neutral'
+    else:
+        return 'Negative'
+
+# Search for tweets and perform sentiment analysis
+search_query = 'Artificial Intelligence'
+tweets = api.search(q=search_query, count=10)
+
+for tweet in tweets:
+    print(f'Tweet: {tweet.text}')
+    print(f'Sentiment: {analyze_sentiment(tweet.text)}')
+    print('---')
